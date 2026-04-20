@@ -26,7 +26,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3002
 
-// Security & middleware
+// Middleware
 app.use(
   helmet({
     hsts: false,
@@ -39,7 +39,7 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL
       ? process.env.CLIENT_URL.split(',')
-      : ['http://localhost:5173', 'http://localhost:3002'],
+      : ['http://localhost:5173'],
     credentials: true,
   })
 )
@@ -60,12 +60,12 @@ app.use('/api/wishlist', wishlistRouter)
 app.use('/api/reviews', reviewRouter)
 app.use('/api/notifications', notificationRouter)
 
-// Health check
+// Health route
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({ status: 'ok' })
 })
 
-// Serve frontend in production
+// Static frontend (optional)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../web/dist')))
 
@@ -74,27 +74,18 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// Global error handler
+// Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('Error:', err.stack)
-  res.status(err.status || 500).json({
-    success: false,
-    error:
-      process.env.NODE_ENV === 'production'
-        ? 'Internal Server Error'
-        : err.message,
-  })
+  console.error(err)
+  res.status(500).json({ error: 'Internal Server Error' })
 })
 
-/**
- * IMPORTANT:
- * Only run server locally (NOT on Vercel)
- */
+// ❗ Only run locally
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`🚀 Server running on http://0.0.0.0:${PORT}`)
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
   })
 }
 
-// Export for Vercel (serverless)
+// ✅ Export for Vercel
 export default app
