@@ -17,23 +17,28 @@ import { categoryRouter } from './routes/categories.js';
 import { wishlistRouter } from './routes/wishlist.js';
 import { reviewRouter } from './routes/reviews.js';
 import { notificationRouter } from './routes/notifications.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3002;
+
 app.use(helmet({
     hsts: false,
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
 }));
+
 app.use(cors({
     origin: process.env.CLIENT_URL
         ? process.env.CLIENT_URL.split(',')
         : [],
     credentials: true,
 }));
+
 app.use(express.json());
+
 app.use('/api/auth', authRouter);
 app.use('/api/shops', shopRouter);
 app.use('/api/products', productRouter);
@@ -46,9 +51,11 @@ app.use('/api/categories', categoryRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/notifications', notificationRouter);
+
 app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
 // Serve frontend static files only in production
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../../web/dist')));
@@ -56,6 +63,7 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(__dirname, '../../web/dist/index.html'));
     });
 }
+
 // Global error handler (must be last)
 app.use((err, _req, res, _next) => {
     console.error('Error:', err.stack);
@@ -64,7 +72,12 @@ app.use((err, _req, res, _next) => {
         error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
     });
 });
-app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
-});
+
+// ✅ ONLY run locally - NOT on Vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(Number(PORT), '0.0.0.0', () => {
+        console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
+    });
+}
+
 export default app;
