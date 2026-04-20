@@ -1,0 +1,56 @@
+export const ORDER_STATUS = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  PREPARING: 'PREPARING',
+  READY_FOR_PICKUP: 'READY_FOR_PICKUP',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+  FAILED: 'FAILED',
+} as const
+
+export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS]
+
+export const DELIVERY_STATUS = {
+  ASSIGNED: 'ASSIGNED',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  PICKED_UP: 'PICKED_UP',
+  IN_TRANSIT: 'IN_TRANSIT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+} as const
+
+export type DeliveryStatus = (typeof DELIVERY_STATUS)[keyof typeof DELIVERY_STATUS]
+
+export const PAYMENT_STATUS = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+} as const
+
+export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS]
+
+export const NOTIFICATION_TYPES = {
+  ORDER_STATUS_UPDATE: 'ORDER_STATUS_UPDATE',
+  SHOP_APPROVAL: 'SHOP_APPROVAL',
+  SHOP_REJECTION: 'SHOP_REJECTION',
+  DELIVERY_ASSIGNMENT: 'DELIVERY_ASSIGNMENT',
+  OTP_VERIFICATION: 'OTP_VERIFICATION',
+} as const
+
+export type NotificationType = (typeof NOTIFICATION_TYPES)[keyof typeof NOTIFICATION_TYPES]
+
+export const SHOP_TYPES = {
+  COMMISSION: 'COMMISSION',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+} as const
+
+export type ShopType = (typeof SHOP_TYPES)[keyof typeof SHOP_TYPES]
+
+export const CATEGORY_TYPES = {
+  PRODUCT: 'PRODUCT',
+  SHOP: 'SHOP',
+} as const
+
+export type CategoryType = (typeof CATEGORY_TYPES)[keyof typeof CATEGORY_TYPES]

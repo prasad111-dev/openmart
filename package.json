@@ -1,0 +1,23 @@
+{
+  "name": "openmart",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"bun run --cwd apps/web dev\" \"bun run --cwd apps/api dev\"",
+    "dev:web": "bun run --cwd apps/web dev",
+    "dev:api": "bun run --cwd apps/api dev",
+    "build": "bun run --cwd apps/web build && bun run --cwd apps/api build",
+    "lint": "bun run --cwd apps/web lint && bun run --cwd apps/api lint",
+    "typecheck": "bun run --cwd apps/web typecheck && bun run --cwd apps/api typecheck"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.21",
+    "concurrently": "^9.1.2",
+    "playwright": "^1.58.2",
+    "typescript": "^5.3.3"
+  }
+}
