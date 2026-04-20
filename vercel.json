@@ -9,18 +9,18 @@
       }
     },
     {
-      "src": "apps/api/dist/index.js",
+      "src": "apps/api/package.json",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/apps/api/dist/index.js"
+      "dest": "apps/api/dist/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/apps/web/dist/$1"
+      "dest": "apps/web/dist/$1"
     }
   ]
 }
